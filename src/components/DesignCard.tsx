@@ -20,7 +20,7 @@ interface DesignCardProps {
 
 export const DesignCard = ({ design, onDownload }: DesignCardProps) => {
   return (
-    <Card className="group bg-slate-800/50 border-slate-700 hover:border-purple-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 overflow-hidden">
+    <Card className="group bg-gray-800/50 border-gray-700 hover:border-yellow-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/20 overflow-hidden">
       <div className="relative overflow-hidden">
         <img
           src={design.image}
@@ -40,7 +40,7 @@ export const DesignCard = ({ design, onDownload }: DesignCardProps) => {
             <Button
               size="sm"
               onClick={onDownload}
-              className="flex-1 bg-purple-600 hover:bg-purple-700 text-white"
+              className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black"
             >
               <Download className="w-4 h-4 mr-2" />
               Download
@@ -49,7 +49,7 @@ export const DesignCard = ({ design, onDownload }: DesignCardProps) => {
         </div>
         {design.premium && (
           <div className="absolute top-4 right-4">
-            <Badge className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white border-none">
+            <Badge className="bg-gradient-to-r from-yellow-500 to-yellow-600 text-black border-none">
               <Crown className="w-3 h-3 mr-1" />
               Premium
             </Badge>
@@ -59,10 +59,10 @@ export const DesignCard = ({ design, onDownload }: DesignCardProps) => {
       
       <CardContent className="p-6">
         <div className="flex justify-between items-start mb-3">
-          <h3 className="text-xl font-semibold text-white group-hover:text-purple-400 transition-colors duration-300">
+          <h3 className="text-xl font-semibold text-white group-hover:text-yellow-400 transition-colors duration-300">
             {design.title}
           </h3>
-          <Badge variant="outline" className="border-purple-400 text-purple-400">
+          <Badge variant="outline" className="border-yellow-400 text-yellow-400">
             {design.category}
           </Badge>
         </div>
@@ -72,7 +72,7 @@ export const DesignCard = ({ design, onDownload }: DesignCardProps) => {
             <Badge
               key={index}
               variant="secondary"
-              className="bg-slate-700 text-gray-300 hover:bg-slate-600 text-xs"
+              className="bg-gray-700 text-gray-300 hover:bg-gray-600 text-xs"
             >
               {tag}
             </Badge>

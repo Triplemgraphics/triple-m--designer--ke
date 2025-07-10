@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -77,7 +76,7 @@ const Index = () => {
     : designs.filter(design => design.category === activeCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <HeroSection />
       
       <StatsSection />
@@ -87,7 +86,7 @@ const Index = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-white mb-4">
-              Featured <span className="text-purple-400">Designs</span>
+              Featured <span className="text-yellow-400">Designs</span>
             </h2>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto">
               Explore our collection of premium design resources and templates
@@ -103,8 +102,8 @@ const Index = () => {
                 onClick={() => setActiveCategory(category)}
                 className={`px-6 py-2 rounded-full transition-all duration-300 ${
                   activeCategory === category
-                    ? "bg-purple-600 hover:bg-purple-700 text-white"
-                    : "bg-transparent border-purple-400 text-purple-400 hover:bg-purple-400 hover:text-white"
+                    ? "bg-yellow-500 hover:bg-yellow-600 text-black"
+                    : "bg-transparent border-yellow-400 text-yellow-400 hover:bg-yellow-400 hover:text-black"
                 }`}
               >
                 {category}
@@ -126,18 +125,18 @@ const Index = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-20 px-4 bg-gradient-to-r from-purple-800 to-pink-800">
+      <section className="py-20 px-4 bg-gradient-to-r from-yellow-600 to-yellow-500">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-white mb-6">
+          <h2 className="text-4xl font-bold text-black mb-6">
             Ready to Download Premium Designs?
           </h2>
-          <p className="text-xl text-purple-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-black/80 mb-8 max-w-2xl mx-auto">
             Subscribe to get access to our entire collection of high-quality design resources
           </p>
           <Button
             onClick={() => setIsModalOpen(true)}
             size="lg"
-            className="bg-white text-purple-800 hover:bg-gray-100 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
+            className="bg-black text-white hover:bg-gray-800 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300 transform hover:scale-105"
           >
             <Mail className="mr-2 h-5 w-5" />
             Subscribe Now

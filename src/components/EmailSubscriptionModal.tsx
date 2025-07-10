@@ -58,15 +58,15 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
   if (isSubscribed) {
     return (
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
+        <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-md">
           <div className="text-center py-8">
-            <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+            <CheckCircle className="w-16 h-16 text-yellow-500 mx-auto mb-4" />
             <h3 className="text-2xl font-bold mb-2">Welcome Aboard!</h3>
             <p className="text-gray-300 mb-4">
               Your download link has been sent to your email.
             </p>
-            <div className="bg-green-500/20 border border-green-500/30 rounded-lg p-4 mb-4">
-              <p className="text-green-400 text-sm">
+            <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4 mb-4">
+              <p className="text-yellow-400 text-sm">
                 🎉 You now have access to all premium designs!
               </p>
             </div>
@@ -78,10 +78,10 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-slate-800 border-slate-700 text-white max-w-md">
+      <DialogContent className="bg-gray-800 border-gray-700 text-white max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center mb-2">
-            <Gift className="w-8 h-8 text-purple-400 mx-auto mb-2" />
+            <Gift className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
             Unlock Premium Designs
           </DialogTitle>
           <DialogDescription className="text-gray-300 text-center">
@@ -89,8 +89,8 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
           </DialogDescription>
         </DialogHeader>
 
-        <div className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-lg p-4 mb-6 border border-purple-500/30">
-          <h4 className="font-semibold text-purple-400 mb-2">What you get:</h4>
+        <div className="bg-gradient-to-r from-yellow-500/20 to-yellow-600/20 rounded-lg p-4 mb-6 border border-yellow-500/30">
+          <h4 className="font-semibold text-yellow-400 mb-2">What you get:</h4>
           <ul className="text-sm text-gray-300 space-y-1">
             <li>✨ Access to 50+ premium designs</li>
             <li>🚀 High-resolution downloads</li>
@@ -108,7 +108,7 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
               placeholder="Enter your name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+              className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-500 focus:ring-yellow-500"
               required
             />
           </div>
@@ -121,7 +121,7 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
               placeholder="Enter your email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-slate-700 border-slate-600 text-white placeholder:text-gray-400 focus:border-purple-500 focus:ring-purple-500"
+              className="bg-gray-700 border-gray-600 text-white placeholder:text-gray-400 focus:border-yellow-500 focus:ring-yellow-500"
               required
             />
           </div>
@@ -129,11 +129,11 @@ export const EmailSubscriptionModal = ({ isOpen, onClose, designId }: EmailSubsc
           <Button
             type="submit"
             disabled={isSubscribing}
-            className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-3 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
+            className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black py-3 font-semibold rounded-lg transition-all duration-300 transform hover:scale-105"
           >
             {isSubscribing ? (
               <div className="flex items-center">
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-black mr-2"></div>
                 Subscribing...
               </div>
             ) : (
