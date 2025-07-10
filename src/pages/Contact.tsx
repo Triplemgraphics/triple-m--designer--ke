@@ -27,8 +27,8 @@ const Contact = () => {
     {
       icon: Phone,
       title: "Call Us",
-      info: "+1 (555) 123-4567",
-      description: "Mon-Fri 9AM-6PM EST"
+      info: "+254754868688",
+      description: "Mon-Fri 9AM-6PM EAT"
     },
     {
       icon: Mail,
@@ -39,7 +39,7 @@ const Contact = () => {
     {
       icon: MessageCircle,
       title: "WhatsApp",
-      info: "+1 (555) 123-4567",
+      info: "+254754868688",
       description: "Quick questions & updates"
     },
     {
@@ -102,12 +102,14 @@ const Contact = () => {
                         <SelectValue placeholder="Service Interested In" />
                       </SelectTrigger>
                       <SelectContent className="bg-gray-800 border-gray-600">
-                        <SelectItem value="logo">Logo Design</SelectItem>
-                        <SelectItem value="social">Social Media Content</SelectItem>
-                        <SelectItem value="brochures">Brochures & Banners</SelectItem>
-                        <SelectItem value="company">Company Profiles</SelectItem>
-                        <SelectItem value="photo">Photo Editing & Mockups</SelectItem>
-                        <SelectItem value="presentations">Presentations & Branding</SelectItem>
+                        <SelectItem value="branding">Branding & Identity</SelectItem>
+                        <SelectItem value="marketing">Marketing & Advertising</SelectItem>
+                        <SelectItem value="digital">Digital & Social Media</SelectItem>
+                        <SelectItem value="product">Product & Packaging</SelectItem>
+                        <SelectItem value="uiux">UI/UX & Web Graphics</SelectItem>
+                        <SelectItem value="presentation">Presentation & Publication</SelectItem>
+                        <SelectItem value="creative">Creative & Custom Projects</SelectItem>
+                        <SelectItem value="corporate">Corporate Design</SelectItem>
                         <SelectItem value="other">Other</SelectItem>
                       </SelectContent>
                     </Select>
@@ -165,9 +167,8 @@ const Contact = () => {
                     <div>
                       <h3 className="text-lg font-semibold text-white mb-2">Our Location</h3>
                       <p className="text-gray-300">
-                        123 Creative Street<br />
-                        Design District<br />
-                        New York, NY 10001
+                        Ruiru, Kiambu<br />
+                        Kenya
                       </p>
                     </div>
                   </div>

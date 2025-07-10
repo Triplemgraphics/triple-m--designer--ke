@@ -1,6 +1,6 @@
 
 import { Link } from "react-router-dom";
-import { Facebook, Mail, Phone } from "lucide-react";
+import { Facebook, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
@@ -44,11 +44,15 @@ export const Footer = () => {
             <div className="space-y-3">
               <div className="flex items-center text-gray-300 text-sm">
                 <Phone className="h-4 w-4 mr-2 text-yellow-400" />
-                +1 (555) 123-4567
+                +254754868688
               </div>
               <div className="flex items-center text-gray-300 text-sm">
                 <Mail className="h-4 w-4 mr-2 text-yellow-400" />
                 hello@triplemgraphics.com
+              </div>
+              <div className="flex items-center text-gray-300 text-sm">
+                <MapPin className="h-4 w-4 mr-2 text-yellow-400" />
+                Ruiru, Kiambu
               </div>
               <div className="flex items-center text-gray-300 text-sm">
                 <Facebook className="h-4 w-4 mr-2 text-yellow-400" />
