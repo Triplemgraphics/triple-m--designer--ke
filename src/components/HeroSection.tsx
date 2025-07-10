@@ -25,6 +25,15 @@ export const HeroSection = () => {
           </div>
         </div>
 
+        {/* Logo */}
+        <div className="mb-8 animate-fade-in">
+          <img 
+            src="/lovable-uploads/34d12f96-0f11-484f-b301-611bd1579402.png" 
+            alt="TripleMgraphics Logo" 
+            className="w-48 h-48 mx-auto mb-6 object-contain"
+          />
+        </div>
+
         <h1 className="text-6xl md:text-8xl font-bold text-white mb-6 animate-fade-in">
           Triple<span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">M</span>
           <span className="text-purple-400">graphics</span>
