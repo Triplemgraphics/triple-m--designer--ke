@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
@@ -29,7 +28,7 @@ const Portfolio = () => {
           id: 1,
           title: "Modern Tech Logo",
           category: "Logo Design",
-          image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Photoshop"],
           description: "Minimalist logo for tech startup"
         },
@@ -37,7 +36,7 @@ const Portfolio = () => {
           id: 2,
           title: "Restaurant Brand Identity",
           category: "Brand Style Guide",
-          image: "https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=800&h=600&fit=crop",
           tools: ["Illustrator", "InDesign"],
           description: "Complete brand guide for upscale restaurant"
         },
@@ -45,7 +44,7 @@ const Portfolio = () => {
           id: 3,
           title: "Executive Business Cards",
           category: "Business Cards",
-          image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
           tools: ["Photoshop", "InDesign"],
           description: "Luxury business card design"
         },
@@ -53,7 +52,7 @@ const Portfolio = () => {
           id: 4,
           title: "Corporate Stationery",
           category: "Letterheads & Stationery",
-          image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=600&fit=crop",
           tools: ["InDesign", "Illustrator"],
           description: "Professional letterhead design"
         }
@@ -68,7 +67,7 @@ const Portfolio = () => {
           id: 5,
           title: "Event Marketing Flyer",
           category: "Posters & Flyers",
-          image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?w=800&h=600&fit=crop",
           tools: ["Photoshop", "Illustrator"],
           description: "Eye-catching event promotion design"
         },
@@ -76,7 +75,7 @@ const Portfolio = () => {
           id: 6,
           title: "Company Brochure",
           category: "Brochures",
-          image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=600&fit=crop",
           tools: ["InDesign", "Photoshop"],
           description: "Tri-fold corporate brochure"
         },
@@ -84,7 +83,7 @@ const Portfolio = () => {
           id: 7,
           title: "Trade Show Banner",
           category: "Banners",
-          image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1540479859555-17af45c78602?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Photoshop"],
           description: "Professional roll-up banner design"
         },
@@ -92,7 +91,7 @@ const Portfolio = () => {
           id: 8,
           title: "Vehicle Wrap Design",
           category: "Vehicle Wraps",
-          image: "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Photoshop"],
           description: "Full vehicle branding solution"
         }
@@ -107,7 +106,7 @@ const Portfolio = () => {
           id: 9,
           title: "Instagram Campaign",
           category: "Social Media Posts",
-          image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=600&fit=crop",
           tools: ["Canva", "Photoshop"],
           description: "Cohesive Instagram post series"
         },
@@ -115,7 +114,7 @@ const Portfolio = () => {
           id: 10,
           title: "Facebook Cover Design",
           category: "Social Media Banners",
-          image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?w=800&h=600&fit=crop",
           tools: ["Photoshop", "Illustrator"],
           description: "Professional Facebook cover design"
         },
@@ -123,7 +122,7 @@ const Portfolio = () => {
           id: 11,
           title: "YouTube Thumbnail Set",
           category: "YouTube Graphics",
-          image: "https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=800&h=600&fit=crop",
           tools: ["Photoshop", "After Effects"],
           description: "Click-worthy YouTube thumbnails"
         },
@@ -131,7 +130,7 @@ const Portfolio = () => {
           id: 12,
           title: "WhatsApp Status Graphics",
           category: "WhatsApp Design",
-          image: "https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1611162618479-ee3d24aaef0b?w=800&h=600&fit=crop",
           tools: ["Canva", "Photoshop"],
           description: "Engaging WhatsApp status designs"
         }
@@ -146,7 +145,7 @@ const Portfolio = () => {
           id: 13,
           title: "Product Label Design",
           category: "Product Labels",
-          image: "https://images.unsplash.com/photo-1558655146-364adaf1fcc9?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Photoshop"],
           description: "Attractive product labeling"
         },
@@ -154,7 +153,7 @@ const Portfolio = () => {
           id: 14,
           title: "Custom Box Packaging",
           category: "Box Packaging",
-          image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&h=600&fit=crop",
           tools: ["Illustrator", "InDesign"],
           description: "Premium box design for retail"
         },
@@ -162,7 +161,7 @@ const Portfolio = () => {
           id: 15,
           title: "Pouch Design",
           category: "Flexible Packaging",
-          image: "https://images.unsplash.com/photo-1500673922987-e212871fec22?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=800&h=600&fit=crop",
           tools: ["Photoshop", "Illustrator"],
           description: "Food pouch packaging design"
         }
@@ -177,7 +176,7 @@ const Portfolio = () => {
           id: 16,
           title: "E-commerce Website UI",
           category: "Website UI",
-          image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop",
           tools: ["Figma", "Photoshop"],
           description: "Modern e-commerce interface design"
         },
@@ -185,7 +184,7 @@ const Portfolio = () => {
           id: 17,
           title: "Mobile App Design",
           category: "App UI",
-          image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=800&h=600&fit=crop",
           tools: ["Figma", "Sketch"],
           description: "Intuitive mobile app interface"
         },
@@ -193,7 +192,7 @@ const Portfolio = () => {
           id: 18,
           title: "Landing Page Design",
           category: "Landing Pages",
-          image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=600&fit=crop",
           tools: ["Figma", "Photoshop"],
           description: "High-converting landing page"
         }
@@ -208,7 +207,7 @@ const Portfolio = () => {
           id: 19,
           title: "Company Profile Design",
           category: "Company Profiles",
-          image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=800&h=600&fit=crop",
           tools: ["InDesign", "Illustrator"],
           description: "Professional company profile"
         },
@@ -216,7 +215,7 @@ const Portfolio = () => {
           id: 20,
           title: "Investor Pitch Deck",
           category: "Pitch Decks",
-          image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
           tools: ["PowerPoint", "Illustrator"],
           description: "Compelling investor presentation"
         },
@@ -224,7 +223,7 @@ const Portfolio = () => {
           id: 21,
           title: "Annual Report Design",
           category: "Annual Reports",
-          image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=600&fit=crop",
           tools: ["InDesign", "Photoshop"],
           description: "Corporate annual report layout"
         }
@@ -239,7 +238,7 @@ const Portfolio = () => {
           id: 22,
           title: "Photo Manipulation Art",
           category: "Photo Manipulation",
-          image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&h=600&fit=crop",
           tools: ["Photoshop", "Lightroom"],
           description: "Creative photo editing and compositing"
         },
@@ -247,7 +246,7 @@ const Portfolio = () => {
           id: 23,
           title: "Digital Illustration",
           category: "Digital Art",
-          image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Procreate"],
           description: "Custom digital artwork"
         },
@@ -255,7 +254,7 @@ const Portfolio = () => {
           id: 24,
           title: "Infographic Design",
           category: "Infographics",
-          image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=600&fit=crop",
           tools: ["Illustrator", "Canva"],
           description: "Data visualization design"
         }
@@ -270,7 +269,7 @@ const Portfolio = () => {
           id: 25,
           title: "Employee ID Cards",
           category: "ID Cards",
-          image: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&h=600&fit=crop",
           tools: ["Photoshop", "InDesign"],
           description: "Professional employee identification"
         },
@@ -278,7 +277,7 @@ const Portfolio = () => {
           id: 26,
           title: "Achievement Certificates",
           category: "Certificates",
-          image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=800&h=600&fit=crop",
           tools: ["Illustrator", "InDesign"],
           description: "Custom certificate designs"
         },
@@ -286,7 +285,7 @@ const Portfolio = () => {
           id: 27,
           title: "Restaurant Menu Design",
           category: "Menus",
-          image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=800&h=600&fit=crop",
+          image: "https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=800&h=600&fit=crop",
           tools: ["InDesign", "Photoshop"],
           description: "Elegant restaurant menu layout"
         }
