@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "@/components/Navigation";
@@ -150,11 +149,11 @@ const Index = () => {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1920&h=1080&fit=crop"
-            alt="Design workspace"
-            className="w-full h-full object-cover opacity-30"
+            src="/lovable-uploads/fadf33c6-eb1f-4d53-8603-c7653121fbb7.png"
+            alt="TripleMgraphics Billboard Design"
+            className="w-full h-full object-cover opacity-40"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 to-black/60"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 to-black/70"></div>
         </div>
 
         <div className="relative z-10 text-center max-w-5xl mx-auto">
