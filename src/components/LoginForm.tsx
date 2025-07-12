@@ -49,7 +49,7 @@ const LoginForm = () => {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-center">Rental Management System</CardTitle>
+          <CardTitle className="text-center">M3 Rental Management System</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -76,7 +76,7 @@ const LoginForm = () => {
               />
             </div>
             <div>
-              <Label htmlFor="securityKey">Security Key (Optional)</Label>
+              <Label htmlFor="securityKey">Monthly Security Key (Optional)</Label>
               <input
                 id="securityKey"
                 type="text"
@@ -90,8 +90,14 @@ const LoginForm = () => {
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
           </form>
-          <div className="mt-4 text-sm text-muted-foreground text-center">
-            Demo credentials: admin@rental.com / admin123
+          <div className="mt-4 text-sm text-muted-foreground">
+            <div className="font-medium mb-2">Demo Credentials:</div>
+            <div className="space-y-1 text-xs">
+              <div><strong>Admin:</strong> admin@m3rental.com / admin123</div>
+              <div><strong>Manager:</strong> manager@m3rental.com / manager123</div>
+              <div><strong>Agent:</strong> agent@m3rental.com / agent123</div>
+              <div><strong>Guest:</strong> guest@m3rental.com / guest123</div>
+            </div>
           </div>
         </CardContent>
       </Card>

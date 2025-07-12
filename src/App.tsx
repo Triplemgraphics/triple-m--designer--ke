@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import LoginForm from "@/components/LoginForm";
+import ProtectedRoute from "@/components/ProtectedRoute";
 import Dashboard from "@/pages/Dashboard";
 import Properties from "@/pages/Properties";
 import Tenants from "@/pages/Tenants";
@@ -15,20 +16,6 @@ import Users from "@/pages/Users";
 import Notifications from "@/pages/Notifications";
 
 const queryClient = new QueryClient();
-
-const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { isAuthenticated, isLoading } = useAuth();
-  
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
-  }
-  
-  if (!isAuthenticated) {
-    return <LoginForm />;
-  }
-  
-  return <>{children}</>;
-};
 
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
@@ -41,12 +28,54 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/properties" element={<Properties />} />
-      <Route path="/tenants" element={<Tenants />} />
-      <Route path="/payments" element={<Payments />} />
-      <Route path="/reports" element={<Reports />} />
-      <Route path="/users" element={<Users />} />
-      <Route path="/notifications" element={<Notifications />} />
+      <Route 
+        path="/properties" 
+        element={
+          <ProtectedRoute requiredModule="properties">
+            <Properties />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/tenants" 
+        element={
+          <ProtectedRoute requiredModule="tenants">
+            <Tenants />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/payments" 
+        element={
+          <ProtectedRoute requiredModule="payments">
+            <Payments />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/reports" 
+        element={
+          <ProtectedRoute requiredModule="reports">
+            <Reports />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/users" 
+        element={
+          <ProtectedRoute requiredRole="admin">
+            <Users />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/notifications" 
+        element={
+          <ProtectedRoute requiredModule="notifications">
+            <Notifications />
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 };
