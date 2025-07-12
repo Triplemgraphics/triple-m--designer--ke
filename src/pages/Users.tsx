@@ -35,9 +35,9 @@ const Users = () => {
     },
     {
       id: '4',
-      name: 'Mike Viewer',
-      email: 'mike.viewer@rental.com',
-      role: 'viewer',
+      name: 'Mike Guest',
+      email: 'mike.guest@rental.com',
+      role: 'guest',
       isActive: false,
       lastLogin: new Date('2024-07-05'),
     },
@@ -48,7 +48,7 @@ const Users = () => {
       case 'admin': return 'text-red-600 bg-red-100';
       case 'manager': return 'text-blue-600 bg-blue-100';
       case 'agent': return 'text-green-600 bg-green-100';
-      case 'viewer': return 'text-gray-600 bg-gray-100';
+      case 'guest': return 'text-gray-600 bg-gray-100';
       default: return 'text-gray-600 bg-gray-100';
     }
   };
@@ -58,7 +58,7 @@ const Users = () => {
       case 'admin': return 'Full system access';
       case 'manager': return 'Properties, Tenants, Payments, Reports';
       case 'agent': return 'Properties, Tenants, Payments';
-      case 'viewer': return 'View-only access';
+      case 'guest': return 'View-only access';
       default: return 'No permissions';
     }
   };
