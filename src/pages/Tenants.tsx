@@ -1,53 +1,27 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Edit, Eye, Mail, Phone } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
-import { Tenant, TenantStatus } from '@/types/tenant';
+import { TenantStatus } from '@/types/tenant';
+import { tenantsService } from '@/services/tenantsService';
+import { toast } from '@/hooks/use-toast';
 
 const Tenants = () => {
-  // Mock data - replace with actual data fetching
-  const [tenants] = useState<Tenant[]>([
-    {
-      id: '1',
-      name: 'John Doe',
-      email: 'john.doe@email.com',
-      phone: '(555) 123-4567',
-      emergencyContact: {
-        name: 'Jane Doe',
-        phone: '(555) 987-6543',
-        relationship: 'Spouse',
-      },
-      leaseStart: new Date('2024-01-01'),
-      leaseEnd: new Date('2024-12-31'),
-      propertyId: '1',
-      depositAmount: 1200,
-      rentAmount: 1200,
-      status: 'active',
-      createdAt: new Date('2023-12-15'),
-      updatedAt: new Date('2023-12-15'),
-    },
-    {
-      id: '2',
-      name: 'Sarah Johnson',
-      email: 'sarah.j@email.com',
-      phone: '(555) 456-7890',
-      emergencyContact: {
-        name: 'Mike Johnson',
-        phone: '(555) 654-3210',
-        relationship: 'Brother',
-      },
-      leaseStart: new Date('2024-02-01'),
-      leaseEnd: new Date('2025-01-31'),
-      propertyId: '2',
-      depositAmount: 2500,
-      rentAmount: 2500,
-      status: 'pending',
-      createdAt: new Date('2024-01-20'),
-      updatedAt: new Date('2024-01-20'),
-    },
-  ]);
+  const { data: tenants = [], isLoading, error } = useQuery({
+    queryKey: ['tenants'],
+    queryFn: tenantsService.getAll,
+  });
+
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to load tenants",
+      variant: "destructive",
+    });
+  }
 
   const getStatusColor = (status: TenantStatus) => {
     switch (status) {
@@ -58,6 +32,38 @@ const Tenants = () => {
       default: return 'text-gray-600 bg-gray-100';
     }
   };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Tenants</h2>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Tenant
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="animate-pulse">
+                <CardHeader>
+                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-16 bg-gray-200 rounded"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -94,11 +100,11 @@ const Tenants = () => {
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
                       <span className="text-muted-foreground">Lease Start:</span>
-                      <p>{tenant.leaseStart.toLocaleDateString()}</p>
+                      <p>{new Date(tenant.leaseStart).toLocaleDateString()}</p>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Lease End:</span>
-                      <p>{tenant.leaseEnd.toLocaleDateString()}</p>
+                      <p>{new Date(tenant.leaseEnd).toLocaleDateString()}</p>
                     </div>
                     <div>
                       <span className="text-muted-foreground">Rent:</span>
@@ -129,6 +135,17 @@ const Tenants = () => {
             </Card>
           ))}
         </div>
+
+        {tenants.length === 0 && !isLoading && (
+          <div className="text-center py-12">
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">No tenants found</h3>
+            <p className="text-sm text-muted-foreground mb-4">Get started by adding your first tenant.</p>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Tenant
+            </Button>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );

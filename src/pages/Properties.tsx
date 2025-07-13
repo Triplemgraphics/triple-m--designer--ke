@@ -1,42 +1,27 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
-import { Property, PropertyStatus } from '@/types/property';
+import { PropertyStatus } from '@/types/property';
+import { propertiesService } from '@/services/propertiesService';
+import { toast } from '@/hooks/use-toast';
 
 const Properties = () => {
-  // Mock data - replace with actual data fetching
-  const [properties] = useState<Property[]>([
-    {
-      id: '1',
-      name: 'Sunset Apartments - Unit 101',
-      address: '123 Main St, Apt 101',
-      type: 'apartment',
-      rentAmount: 1200,
-      status: 'occupied',
-      bedrooms: 2,
-      bathrooms: 1,
-      squareFeet: 850,
-      tenantId: 'tenant1',
-      createdAt: new Date('2024-01-15'),
-      updatedAt: new Date('2024-01-15'),
-    },
-    {
-      id: '2',
-      name: 'Garden View House',
-      address: '456 Oak Ave',
-      type: 'house',
-      rentAmount: 2500,
-      status: 'vacant',
-      bedrooms: 3,
-      bathrooms: 2,
-      squareFeet: 1400,
-      createdAt: new Date('2024-01-10'),
-      updatedAt: new Date('2024-01-10'),
-    },
-  ]);
+  const { data: properties = [], isLoading, error } = useQuery({
+    queryKey: ['properties'],
+    queryFn: propertiesService.getAll,
+  });
+
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to load properties",
+      variant: "destructive",
+    });
+  }
 
   const getStatusColor = (status: PropertyStatus) => {
     switch (status) {
@@ -47,6 +32,39 @@ const Properties = () => {
       default: return 'text-gray-600 bg-gray-100';
     }
   };
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Properties</h2>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Property
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="animate-pulse">
+                <CardHeader>
+                  <div className="h-6 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                    <div className="h-4 bg-gray-200 rounded"></div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -110,6 +128,17 @@ const Properties = () => {
             </Card>
           ))}
         </div>
+
+        {properties.length === 0 && !isLoading && (
+          <div className="text-center py-12">
+            <h3 className="text-lg font-medium text-muted-foreground mb-2">No properties found</h3>
+            <p className="text-sm text-muted-foreground mb-4">Get started by adding your first property.</p>
+            <Button>
+              <Plus className="h-4 w-4 mr-2" />
+              Add Property
+            </Button>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );

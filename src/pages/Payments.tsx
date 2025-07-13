@@ -1,54 +1,28 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Plus, Download, AlertCircle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
-import { Payment, PaymentStatus } from '@/types/payment';
+import { PaymentStatus } from '@/types/payment';
+import { paymentsService } from '@/services/paymentsService';
+import { toast } from '@/hooks/use-toast';
 
 const Payments = () => {
-  // Mock data - replace with actual data fetching
-  const [payments] = useState<Payment[]>([
-    {
-      id: '1',
-      tenantId: '1',
-      propertyId: '1',
-      amount: 1200,
-      type: 'rent',
-      status: 'paid',
-      dueDate: new Date('2024-07-01'),
-      paidDate: new Date('2024-06-30'),
-      receiptNumber: 'RCP-001',
-      createdAt: new Date('2024-06-01'),
-      updatedAt: new Date('2024-06-30'),
-    },
-    {
-      id: '2',
-      tenantId: '1',
-      propertyId: '1',
-      amount: 1200,
-      type: 'rent',
-      status: 'overdue',
-      dueDate: new Date('2024-08-01'),
-      notes: 'Follow up required',
-      createdAt: new Date('2024-07-01'),
-      updatedAt: new Date('2024-07-01'),
-    },
-    {
-      id: '3',
-      tenantId: '2',
-      propertyId: '2',
-      amount: 2500,
-      type: 'deposit',
-      status: 'paid',
-      dueDate: new Date('2024-02-01'),
-      paidDate: new Date('2024-01-28'),
-      receiptNumber: 'RCP-002',
-      createdAt: new Date('2024-01-20'),
-      updatedAt: new Date('2024-01-28'),
-    },
-  ]);
+  const { data: payments = [], isLoading, error } = useQuery({
+    queryKey: ['payments'],
+    queryFn: paymentsService.getAll,
+  });
+
+  if (error) {
+    toast({
+      title: "Error",
+      description: "Failed to load payments",
+      variant: "destructive",
+    });
+  }
 
   const getStatusColor = (status: PaymentStatus) => {
     switch (status) {
@@ -59,6 +33,61 @@ const Payments = () => {
       default: return 'text-gray-600 bg-gray-100';
     }
   };
+
+  // Calculate stats from real data
+  const stats = React.useMemo(() => {
+    const thisMonth = new Date();
+    thisMonth.setDate(1);
+    
+    const totalCollected = payments
+      .filter(p => p.status === 'paid' && new Date(p.paidDate || '') >= thisMonth)
+      .reduce((sum, p) => sum + p.amount, 0);
+      
+    const outstanding = payments
+      .filter(p => p.status === 'pending')
+      .reduce((sum, p) => sum + p.amount, 0);
+      
+    const overdue = payments
+      .filter(p => p.status === 'overdue')
+      .reduce((sum, p) => sum + p.amount, 0);
+
+    return { totalCollected, outstanding, overdue };
+  }, [payments]);
+
+  if (isLoading) {
+    return (
+      <DashboardLayout>
+        <div className="space-y-6">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Payments</h2>
+            <div className="flex space-x-2">
+              <Button variant="outline">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+              <Button>
+                <Plus className="h-4 w-4 mr-2" />
+                Record Payment
+              </Button>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="animate-pulse">
+                <CardHeader>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-8 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded"></div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -83,8 +112,10 @@ const Payments = () => {
               <CardTitle className="text-sm font-medium">Total Collected (This Month)</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-green-600">$18,500</div>
-              <p className="text-sm text-muted-foreground">15 payments received</p>
+              <div className="text-2xl font-bold text-green-600">${stats.totalCollected.toLocaleString()}</div>
+              <p className="text-sm text-muted-foreground">
+                {payments.filter(p => p.status === 'paid').length} payments received
+              </p>
             </CardContent>
           </Card>
 
@@ -93,8 +124,10 @@ const Payments = () => {
               <CardTitle className="text-sm font-medium">Outstanding</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-yellow-600">$3,600</div>
-              <p className="text-sm text-muted-foreground">3 pending payments</p>
+              <div className="text-2xl font-bold text-yellow-600">${stats.outstanding.toLocaleString()}</div>
+              <p className="text-sm text-muted-foreground">
+                {payments.filter(p => p.status === 'pending').length} pending payments
+              </p>
             </CardContent>
           </Card>
 
@@ -103,8 +136,10 @@ const Payments = () => {
               <CardTitle className="text-sm font-medium">Overdue</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-red-600">$1,200</div>
-              <p className="text-sm text-muted-foreground">1 overdue payment</p>
+              <div className="text-2xl font-bold text-red-600">${stats.overdue.toLocaleString()}</div>
+              <p className="text-sm text-muted-foreground">
+                {payments.filter(p => p.status === 'overdue').length} overdue payments
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -129,11 +164,11 @@ const Payments = () => {
               <TableBody>
                 {payments.map((payment) => (
                   <TableRow key={payment.id}>
-                    <TableCell>John Doe</TableCell>
-                    <TableCell>Unit 101</TableCell>
+                    <TableCell>Tenant {payment.tenantId}</TableCell>
+                    <TableCell>Property {payment.propertyId}</TableCell>
                     <TableCell className="capitalize">{payment.type}</TableCell>
                     <TableCell className="font-medium">${payment.amount}</TableCell>
-                    <TableCell>{payment.dueDate.toLocaleDateString()}</TableCell>
+                    <TableCell>{new Date(payment.dueDate).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(payment.status)}`}>
                         {payment.status === 'overdue' && <AlertCircle className="h-3 w-3 inline mr-1" />}
@@ -152,6 +187,12 @@ const Payments = () => {
                 ))}
               </TableBody>
             </Table>
+            
+            {payments.length === 0 && (
+              <div className="text-center py-8">
+                <p className="text-muted-foreground">No payments found</p>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
