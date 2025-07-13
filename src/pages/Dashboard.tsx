@@ -2,24 +2,67 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Building, Users, CreditCard, AlertTriangle } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
+import { propertiesService } from '@/services/propertiesService';
+import { tenantsService } from '@/services/tenantsService';
+import { paymentsService } from '@/services/paymentsService';
 
 const Dashboard = () => {
-  // Mock data - replace with actual data fetching
-  const stats = {
-    totalProperties: 45,
-    occupiedProperties: 38,
-    totalTenants: 38,
-    monthlyRevenue: 75600,
-    overduePayments: 3,
-    vacantUnits: 7,
-  };
+  const { data: properties = [] } = useQuery({
+    queryKey: ['properties'],
+    queryFn: propertiesService.getAll,
+  });
 
-  const recentActivity = [
-    { id: 1, type: 'payment', message: 'Payment received from John Doe - Unit 101', time: '2 hours ago' },
-    { id: 2, type: 'lease', message: 'New lease signed for Unit 205', time: '5 hours ago' },
-    { id: 3, type: 'maintenance', message: 'Maintenance request submitted for Unit 302', time: '1 day ago' },
-  ];
+  const { data: tenants = [] } = useQuery({
+    queryKey: ['tenants'],
+    queryFn: tenantsService.getAll,
+  });
+
+  const { data: payments = [] } = useQuery({
+    queryKey: ['payments'],
+    queryFn: paymentsService.getAll,
+  });
+
+  // Calculate real stats from the data
+  const stats = React.useMemo(() => {
+    const totalProperties = properties.length;
+    const occupiedProperties = properties.filter(p => p.status === 'occupied').length;
+    const vacantUnits = properties.filter(p => p.status === 'vacant').length;
+    const totalTenants = tenants.filter(t => t.status === 'active').length;
+    
+    // Calculate monthly revenue from current rent amounts
+    const monthlyRevenue = tenants
+      .filter(t => t.status === 'active')
+      .reduce((sum, t) => sum + t.rentAmount, 0);
+    
+    const overduePayments = payments.filter(p => p.status === 'overdue').length;
+
+    return {
+      totalProperties,
+      occupiedProperties,
+      totalTenants,
+      monthlyRevenue,
+      overduePayments,
+      vacantUnits,
+      occupancyRate: totalProperties > 0 ? Math.round((occupiedProperties / totalProperties) * 100) : 0
+    };
+  }, [properties, tenants, payments]);
+
+  const recentActivity = React.useMemo(() => {
+    // Get recent payments and sort by date
+    const recentPayments = payments
+      .filter(p => p.status === 'paid')
+      .sort((a, b) => new Date(b.paidDate || b.createdAt).getTime() - new Date(a.paidDate || a.createdAt).getTime())
+      .slice(0, 3);
+
+    return recentPayments.map(payment => ({
+      id: payment.id,
+      type: 'payment',
+      message: `Payment received - $${payment.amount} (${payment.type})`,
+      time: payment.paidDate ? new Date(payment.paidDate).toLocaleDateString() : 'Recently'
+    }));
+  }, [payments]);
 
   return (
     <DashboardLayout>
@@ -48,7 +91,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">{stats.totalTenants}</div>
               <p className="text-xs text-muted-foreground">
-                84% occupancy rate
+                {stats.occupancyRate}% occupancy rate
               </p>
             </CardContent>
           </Card>
@@ -61,7 +104,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold">${stats.monthlyRevenue.toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">
-                +12% from last month
+                Expected monthly income
               </p>
             </CardContent>
           </Card>
@@ -74,7 +117,7 @@ const Dashboard = () => {
             <CardContent>
               <div className="text-2xl font-bold text-destructive">{stats.overduePayments}</div>
               <p className="text-xs text-muted-foreground">
-                Requires attention
+                {stats.overduePayments > 0 ? 'Requires attention' : 'All payments current'}
               </p>
             </CardContent>
           </Card>
@@ -87,37 +130,48 @@ const Dashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentActivity.map((activity) => (
-                  <div key={activity.id} className="flex items-start space-x-3">
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm">{activity.message}</p>
-                      <p className="text-xs text-muted-foreground">{activity.time}</p>
+                {recentActivity.length > 0 ? (
+                  recentActivity.map((activity) => (
+                    <div key={activity.id} className="flex items-start space-x-3">
+                      <div className="w-2 h-2 bg-primary rounded-full mt-2"></div>
+                      <div className="flex-1">
+                        <p className="text-sm">{activity.message}</p>
+                        <p className="text-xs text-muted-foreground">{activity.time}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                ) : (
+                  <p className="text-sm text-muted-foreground">No recent activity</p>
+                )}
               </div>
             </CardContent>
           </Card>
 
           <Card>
             <CardHeader>
-              <CardTitle>Upcoming Tasks</CardTitle>
+              <CardTitle>Property Status</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-3 bg-muted rounded-md">
-                  <span className="text-sm">Lease renewal - Unit 405</span>
-                  <span className="text-xs text-muted-foreground">Due in 5 days</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-muted rounded-md">
-                  <span className="text-sm">Property inspection - Building A</span>
-                  <span className="text-xs text-muted-foreground">Due in 1 week</span>
-                </div>
-                <div className="flex items-center justify-between p-3 bg-muted rounded-md">
-                  <span className="text-sm">Rent collection follow-up</span>
-                  <span className="text-xs text-muted-foreground">Due today</span>
-                </div>
+                {properties.slice(0, 5).map((property) => (
+                  <div key={property.id} className="flex items-center justify-between p-3 bg-muted rounded-md">
+                    <div>
+                      <span className="text-sm font-medium">{property.name}</span>
+                      <p className="text-xs text-muted-foreground">{property.address}</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                      property.status === 'occupied' ? 'text-green-600 bg-green-100' :
+                      property.status === 'vacant' ? 'text-yellow-600 bg-yellow-100' :
+                      property.status === 'maintenance' ? 'text-red-600 bg-red-100' :
+                      'text-gray-600 bg-gray-100'
+                    }`}>
+                      {property.status}
+                    </span>
+                  </div>
+                ))}
+                {properties.length === 0 && (
+                  <p className="text-sm text-muted-foreground">No properties found</p>
+                )}
               </div>
             </CardContent>
           </Card>

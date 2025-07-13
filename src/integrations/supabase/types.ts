@@ -14,7 +14,178 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      payments: {
+        Row: {
+          amount: number
+          created_at: string
+          due_date: string
+          id: string
+          notes: string | null
+          paid_date: string | null
+          property_id: string
+          receipt_number: string | null
+          status: Database["public"]["Enums"]["payment_status"]
+          tenant_id: string
+          type: Database["public"]["Enums"]["payment_type"]
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          created_at?: string
+          due_date: string
+          id?: string
+          notes?: string | null
+          paid_date?: string | null
+          property_id: string
+          receipt_number?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          tenant_id: string
+          type?: Database["public"]["Enums"]["payment_type"]
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          created_at?: string
+          due_date?: string
+          id?: string
+          notes?: string | null
+          paid_date?: string | null
+          property_id?: string
+          receipt_number?: string | null
+          status?: Database["public"]["Enums"]["payment_status"]
+          tenant_id?: string
+          type?: Database["public"]["Enums"]["payment_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "payments_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "payments_tenant_id_fkey"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      properties: {
+        Row: {
+          address: string
+          bathrooms: number
+          bedrooms: number
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          rent_amount: number
+          square_feet: number | null
+          status: Database["public"]["Enums"]["property_status"]
+          tenant_id: string | null
+          type: Database["public"]["Enums"]["property_type"]
+          updated_at: string
+        }
+        Insert: {
+          address: string
+          bathrooms?: number
+          bedrooms?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          rent_amount?: number
+          square_feet?: number | null
+          status?: Database["public"]["Enums"]["property_status"]
+          tenant_id?: string | null
+          type?: Database["public"]["Enums"]["property_type"]
+          updated_at?: string
+        }
+        Update: {
+          address?: string
+          bathrooms?: number
+          bedrooms?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          rent_amount?: number
+          square_feet?: number | null
+          status?: Database["public"]["Enums"]["property_status"]
+          tenant_id?: string | null
+          type?: Database["public"]["Enums"]["property_type"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fk_properties_tenant"
+            columns: ["tenant_id"]
+            isOneToOne: false
+            referencedRelation: "tenants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tenants: {
+        Row: {
+          created_at: string
+          deposit_amount: number
+          email: string
+          emergency_contact: Json
+          id: string
+          lease_end: string
+          lease_start: string
+          name: string
+          phone: string
+          property_id: string | null
+          rent_amount: number
+          status: Database["public"]["Enums"]["tenant_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          deposit_amount?: number
+          email: string
+          emergency_contact?: Json
+          id?: string
+          lease_end: string
+          lease_start: string
+          name: string
+          phone: string
+          property_id?: string | null
+          rent_amount?: number
+          status?: Database["public"]["Enums"]["tenant_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          deposit_amount?: number
+          email?: string
+          emergency_contact?: Json
+          id?: string
+          lease_end?: string
+          lease_start?: string
+          name?: string
+          phone?: string
+          property_id?: string | null
+          rent_amount?: number
+          status?: Database["public"]["Enums"]["tenant_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tenants_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +194,11 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      payment_status: "pending" | "paid" | "overdue" | "partial"
+      payment_type: "rent" | "deposit" | "penalty" | "maintenance" | "other"
+      property_status: "vacant" | "occupied" | "maintenance" | "unavailable"
+      property_type: "apartment" | "house" | "condo" | "townhouse" | "studio"
+      tenant_status: "active" | "inactive" | "pending" | "terminated"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +325,12 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      payment_status: ["pending", "paid", "overdue", "partial"],
+      payment_type: ["rent", "deposit", "penalty", "maintenance", "other"],
+      property_status: ["vacant", "occupied", "maintenance", "unavailable"],
+      property_type: ["apartment", "house", "condo", "townhouse", "studio"],
+      tenant_status: ["active", "inactive", "pending", "terminated"],
+    },
   },
 } as const

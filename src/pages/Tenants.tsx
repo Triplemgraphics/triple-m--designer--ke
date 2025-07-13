@@ -1,18 +1,93 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Edit, Eye, Mail, Phone } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
 import { TenantStatus } from '@/types/tenant';
 import { tenantsService } from '@/services/tenantsService';
 import { toast } from '@/hooks/use-toast';
+import TenantForm from '@/components/TenantForm';
 
 const Tenants = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingTenant, setEditingTenant] = useState(null);
+  const queryClient = useQueryClient();
+
   const { data: tenants = [], isLoading, error } = useQuery({
     queryKey: ['tenants'],
     queryFn: tenantsService.getAll,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: (data) => {
+      const tenantData = {
+        ...data,
+        leaseStart: new Date(data.leaseStart),
+        leaseEnd: new Date(data.leaseEnd),
+        emergencyContact: {
+          name: data.emergencyContactName,
+          phone: data.emergencyContactPhone,
+          relationship: data.emergencyContactRelationship,
+        },
+      };
+      delete tenantData.emergencyContactName;
+      delete tenantData.emergencyContactPhone;
+      delete tenantData.emergencyContactRelationship;
+      return tenantsService.create(tenantData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+      setIsFormOpen(false);
+      toast({
+        title: "Success",
+        description: "Tenant created successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to create tenant",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, updates }) => {
+      const tenantData = {
+        ...updates,
+        leaseStart: new Date(updates.leaseStart),
+        leaseEnd: new Date(updates.leaseEnd),
+        emergencyContact: {
+          name: updates.emergencyContactName,
+          phone: updates.emergencyContactPhone,
+          relationship: updates.emergencyContactRelationship,
+        },
+      };
+      delete tenantData.emergencyContactName;
+      delete tenantData.emergencyContactPhone;
+      delete tenantData.emergencyContactRelationship;
+      return tenantsService.update(id, tenantData);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['tenants'] });
+      setIsFormOpen(false);
+      setEditingTenant(null);
+      toast({
+        title: "Success",
+        description: "Tenant updated successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to update tenant",
+        variant: "destructive",
+      });
+    },
   });
 
   if (error) {
@@ -33,13 +108,36 @@ const Tenants = () => {
     }
   };
 
+  const handleAddTenant = () => {
+    setEditingTenant(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditTenant = (tenant) => {
+    setEditingTenant(tenant);
+    setIsFormOpen(true);
+  };
+
+  const handleFormSubmit = (data) => {
+    if (editingTenant) {
+      updateMutation.mutate({ id: editingTenant.id, updates: data });
+    } else {
+      createMutation.mutate(data);
+    }
+  };
+
+  const handleFormCancel = () => {
+    setIsFormOpen(false);
+    setEditingTenant(null);
+  };
+
   if (isLoading) {
     return (
       <DashboardLayout>
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Tenants</h2>
-            <Button>
+            <Button onClick={handleAddTenant}>
               <Plus className="h-4 w-4 mr-2" />
               Add Tenant
             </Button>
@@ -70,7 +168,7 @@ const Tenants = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">Tenants</h2>
-          <Button>
+          <Button onClick={handleAddTenant}>
             <Plus className="h-4 w-4 mr-2" />
             Add Tenant
           </Button>
@@ -126,7 +224,7 @@ const Tenants = () => {
                     <Eye className="h-4 w-4 mr-1" />
                     View
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={() => handleEditTenant(tenant)}>
                     <Edit className="h-4 w-4 mr-1" />
                     Edit
                   </Button>
@@ -140,12 +238,28 @@ const Tenants = () => {
           <div className="text-center py-12">
             <h3 className="text-lg font-medium text-muted-foreground mb-2">No tenants found</h3>
             <p className="text-sm text-muted-foreground mb-4">Get started by adding your first tenant.</p>
-            <Button>
+            <Button onClick={handleAddTenant}>
               <Plus className="h-4 w-4 mr-2" />
               Add Tenant
             </Button>
           </div>
         )}
+
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingTenant ? 'Edit Tenant' : 'Add New Tenant'}
+              </DialogTitle>
+            </DialogHeader>
+            <TenantForm
+              tenant={editingTenant}
+              onSubmit={handleFormSubmit}
+              onCancel={handleFormCancel}
+              isLoading={createMutation.isPending || updateMutation.isPending}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );

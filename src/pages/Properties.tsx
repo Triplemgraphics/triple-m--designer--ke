@@ -1,18 +1,81 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Plus, Edit, Trash2, Eye } from 'lucide-react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import DashboardLayout from '@/components/DashboardLayout';
 import { PropertyStatus } from '@/types/property';
 import { propertiesService } from '@/services/propertiesService';
 import { toast } from '@/hooks/use-toast';
+import PropertyForm from '@/components/PropertyForm';
 
 const Properties = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [editingProperty, setEditingProperty] = useState(null);
+  const queryClient = useQueryClient();
+
   const { data: properties = [], isLoading, error } = useQuery({
     queryKey: ['properties'],
     queryFn: propertiesService.getAll,
+  });
+
+  const createMutation = useMutation({
+    mutationFn: propertiesService.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['properties'] });
+      setIsFormOpen(false);
+      toast({
+        title: "Success",
+        description: "Property created successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to create property",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: ({ id, updates }) => propertiesService.update(id, updates),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['properties'] });
+      setIsFormOpen(false);
+      setEditingProperty(null);
+      toast({
+        title: "Success",
+        description: "Property updated successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to update property",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: propertiesService.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['properties'] });
+      toast({
+        title: "Success",
+        description: "Property deleted successfully",
+      });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: "Failed to delete property",
+        variant: "destructive",
+      });
+    },
   });
 
   if (error) {
@@ -33,13 +96,42 @@ const Properties = () => {
     }
   };
 
+  const handleAddProperty = () => {
+    setEditingProperty(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditProperty = (property) => {
+    setEditingProperty(property);
+    setIsFormOpen(true);
+  };
+
+  const handleDeleteProperty = (propertyId) => {
+    if (window.confirm('Are you sure you want to delete this property?')) {
+      deleteMutation.mutate(propertyId);
+    }
+  };
+
+  const handleFormSubmit = (data) => {
+    if (editingProperty) {
+      updateMutation.mutate({ id: editingProperty.id, updates: data });
+    } else {
+      createMutation.mutate(data);
+    }
+  };
+
+  const handleFormCancel = () => {
+    setIsFormOpen(false);
+    setEditingProperty(null);
+  };
+
   if (isLoading) {
     return (
       <DashboardLayout>
         <div className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-bold">Properties</h2>
-            <Button>
+            <Button onClick={handleAddProperty}>
               <Plus className="h-4 w-4 mr-2" />
               Add Property
             </Button>
@@ -71,7 +163,7 @@ const Properties = () => {
       <div className="space-y-6">
         <div className="flex justify-between items-center">
           <h2 className="text-2xl font-bold">Properties</h2>
-          <Button>
+          <Button onClick={handleAddProperty}>
             <Plus className="h-4 w-4 mr-2" />
             Add Property
           </Button>
@@ -115,11 +207,16 @@ const Properties = () => {
                     <Eye className="h-4 w-4 mr-1" />
                     View
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button size="sm" variant="outline" onClick={() => handleEditProperty(property)}>
                     <Edit className="h-4 w-4 mr-1" />
                     Edit
                   </Button>
-                  <Button size="sm" variant="outline">
+                  <Button 
+                    size="sm" 
+                    variant="outline" 
+                    onClick={() => handleDeleteProperty(property.id)}
+                    disabled={deleteMutation.isPending}
+                  >
                     <Trash2 className="h-4 w-4 mr-1" />
                     Delete
                   </Button>
@@ -133,12 +230,28 @@ const Properties = () => {
           <div className="text-center py-12">
             <h3 className="text-lg font-medium text-muted-foreground mb-2">No properties found</h3>
             <p className="text-sm text-muted-foreground mb-4">Get started by adding your first property.</p>
-            <Button>
+            <Button onClick={handleAddProperty}>
               <Plus className="h-4 w-4 mr-2" />
               Add Property
             </Button>
           </div>
         )}
+
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+            <DialogHeader>
+              <DialogTitle>
+                {editingProperty ? 'Edit Property' : 'Add New Property'}
+              </DialogTitle>
+            </DialogHeader>
+            <PropertyForm
+              property={editingProperty}
+              onSubmit={handleFormSubmit}
+              onCancel={handleFormCancel}
+              isLoading={createMutation.isPending || updateMutation.isPending}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
