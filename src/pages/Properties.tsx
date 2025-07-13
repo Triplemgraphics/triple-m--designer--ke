@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -41,7 +40,7 @@ const Properties = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, updates }) => propertiesService.update(id, updates),
+    mutationFn: ({ id, updates }: { id: string; updates: any }) => propertiesService.update(id, updates),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['properties'] });
       setIsFormOpen(false);

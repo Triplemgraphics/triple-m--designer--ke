@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -22,7 +21,7 @@ const Tenants = () => {
   });
 
   const createMutation = useMutation({
-    mutationFn: (data) => {
+    mutationFn: (data: any) => {
       const tenantData = {
         ...data,
         leaseStart: new Date(data.leaseStart),
@@ -33,10 +32,9 @@ const Tenants = () => {
           relationship: data.emergencyContactRelationship,
         },
       };
-      delete tenantData.emergencyContactName;
-      delete tenantData.emergencyContactPhone;
-      delete tenantData.emergencyContactRelationship;
-      return tenantsService.create(tenantData);
+      // Remove the flattened emergency contact fields
+      const { emergencyContactName, emergencyContactPhone, emergencyContactRelationship, ...cleanData } = tenantData;
+      return tenantsService.create(cleanData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tenants'] });
@@ -56,7 +54,7 @@ const Tenants = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: ({ id, updates }) => {
+    mutationFn: ({ id, updates }: { id: string; updates: any }) => {
       const tenantData = {
         ...updates,
         leaseStart: new Date(updates.leaseStart),
@@ -67,10 +65,9 @@ const Tenants = () => {
           relationship: updates.emergencyContactRelationship,
         },
       };
-      delete tenantData.emergencyContactName;
-      delete tenantData.emergencyContactPhone;
-      delete tenantData.emergencyContactRelationship;
-      return tenantsService.update(id, tenantData);
+      // Remove the flattened emergency contact fields
+      const { emergencyContactName, emergencyContactPhone, emergencyContactRelationship, ...cleanData } = tenantData;
+      return tenantsService.update(id, cleanData);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['tenants'] });
